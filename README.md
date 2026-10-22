@@ -2,6 +2,10 @@
 
 A local macOS controller that makes Philips WiZ lights follow the mood of your screen or music. Built with Codex, using direct Wi-Fi commands instead of cloud round trips.
 
+## Demo
+<img width="1437" height="456" alt="Screenshot 2026-10-22 at 10 20 01 PM" src="https://github.com/user-attachments/assets/ce34fda7-ce55-4fc7-8139-5f5b0795a8a3" />
+
+
 ## Why I built it
 
 I wanted more than manual color changes: a light that follows movie scenes, reacts to music, and fits into my daily routine. That experiment grew into **Luma**, a native Mac app.
@@ -33,9 +37,3 @@ open Luma.app
 Add your bulb by IP or discovery. Allow Local Network access and, for live sync, Screen & System Audio Recording access for Luma. Keep the app running and Mac awake for routines. Closing the window keeps it running; quitting stops sync and restores the original light settings.
 
 Tests: `python3 -m unittest -v`. No screen/audio recordings are saved or uploaded. Some protected video may appear black during capture.
-
-## Demo
-
-Video / GIF coming soon.
-
-<!-- Add demo video or GIF here. -->
