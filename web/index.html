@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Luma — Your light, your mood</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23b6a2ff'/%3E%3Cpath d='M12 8v16h11' fill='none' stroke='%2315141b' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/sync.css"><script defer src="/app.js"></script><script defer src="/sync.js"></script>
+</head>
+<body>
+<aside class="sidebar">
+  <a class="brand" href="/" aria-label="Luma home"><span class="brand-mark">l.</span> luma<span class="brand-dot">®</span></a>
+  <div class="space-label">YOUR SPACE <span>01</span></div>
+  <button class="nav-item active" data-section="control"><span>◉</span> Light studio <span class="nav-arrow">↗</span></button>
+  <button class="nav-item" data-section="sync"><span>◈</span> Live sync <span class="sync-nav-dot" id="sync-nav-dot" hidden></span></button>
+  <button class="nav-item" data-section="routines"><span>◷</span> Routines</button>
+  <button class="nav-item" data-section="devices"><span>▦</span> My devices</button>
+  <div class="sidebar-lights"><div class="space-label">CONNECTED LIGHTS</div><div id="light-list"></div><button class="text-button" id="add-device-side">＋ Add a light</button></div>
+  <div class="sidebar-bottom"><div class="local-badge"><span class="status-dot"></span> LOCAL CONNECTION</div><p>A little light.<br>A different feeling.</p><span class="version">Made for your Mac · v1.0</span></div>
+</aside>
+<main>
+  <header><div class="breadcrumb">My home <span>/</span> <span id="breadcrumb">Light studio</span></div><div class="header-right"><span id="connection" class="connection">Connecting…</span><button class="icon-button" id="refresh" title="Refresh light status" aria-label="Refresh light status">↻</button></div></header>
+  <section id="section-control" class="page-section">
+    <div class="sync-active-banner" id="sync-active-banner" hidden><span>◈ Live sync is controlling your light. Manual changes will stop it.</span><button id="sync-open-banner">Open live sync ↗</button></div>
+    <div class="page-heading"><div><div class="eyebrow">MAKE ROOM FOR A MOOD</div><h1>Your space, in a new light<span>.</span></h1><p>A small adjustment can change the whole atmosphere.</p></div><button class="button secondary" id="undo">↶ <span>Undo change</span></button></div>
+    <div class="studio-grid">
+      <article class="card light-stage" id="light-stage">
+        <div class="stage-head"><span class="pill" id="room-label">MY ROOM</span><span class="small-muted" id="stage-mode">Live preview</span></div>
+        <div class="lamp-scene"><div class="light-aura"></div><div class="lamp"><div class="bulb-glass"></div><div class="bulb-neck"></div><div class="bulb-base"></div></div><div class="floor-glow"></div></div>
+        <div class="stage-footer"><div><h2 id="light-name">Philips A60</h2><p id="light-caption">Waiting for light…</p></div><button id="power" class="power-button" aria-label="Toggle light power" aria-pressed="false">⏻</button></div>
+      </article>
+      <article class="card controls-card">
+        <div class="card-heading"><h2>Find your feeling</h2><span class="tiny-label">LIGHT CONTROLS</span></div>
+        <div class="tabs" role="tablist" aria-label="Light mode"><button role="tab" aria-selected="true" data-mode="color" id="tab-color" aria-controls="panel-color" class="active">Color</button><button role="tab" aria-selected="false" data-mode="white" id="tab-white" aria-controls="panel-white">White</button><button role="tab" aria-selected="false" data-mode="scenes" id="tab-scenes" aria-controls="panel-scenes">Scenes</button></div>
+        <div id="panel-color" class="mode-panel" role="tabpanel" aria-labelledby="tab-color">
+          <div class="color-layout"><div id="color-wheel" class="color-wheel" role="slider" tabindex="0" aria-label="Color hue; arrow keys adjust" aria-valuemin="0" aria-valuemax="359" aria-valuenow="0"><div id="wheel-pointer" class="wheel-pointer"></div><div class="wheel-center"><span>YOUR COLOR</span><strong id="color-name">Crimson</strong><span id="wheel-hex">#FF0000</span></div></div><div class="color-inputs"><label for="color-input">Custom color</label><div class="hex-input"><input type="color" id="color-input" value="#ff0000" aria-label="Pick a custom color"><input type="text" id="hex" value="#FF0000" aria-label="Hex color" maxlength="7"></div><div class="rgb-row"><label>R<input id="red" type="number" min="0" max="255" value="255"></label><label>G<input id="green" type="number" min="0" max="255" value="0"></label><label>B<input id="blue" type="number" min="0" max="255" value="0"></label></div><label class="range-label" for="saturation">Saturation <span id="saturation-value">100%</span></label><input type="range" id="saturation" min="0" max="100" value="100"><button class="button secondary full" id="apply-color">Apply color ↗</button></div></div>
+          <div class="swatches" aria-label="Quick colors"><button data-color="#ff0000" style="--swatch:#ff4545" aria-label="Red"></button><button data-color="#ff6400" style="--swatch:#ff914d" aria-label="Orange"></button><button data-color="#ffcc00" style="--swatch:#ffd85a" aria-label="Yellow"></button><button data-color="#24e171" style="--swatch:#51db96" aria-label="Green"></button><button data-color="#00c8ff" style="--swatch:#61cfff" aria-label="Sky blue"></button><button data-color="#303bff" style="--swatch:#7778ff" aria-label="Blue"></button><button data-color="#a020f0" style="--swatch:#be8bff" aria-label="Purple"></button><button data-color="#ff32a8" style="--swatch:#ff85c7" aria-label="Pink"></button></div>
+        </div>
+        <div id="panel-white" class="mode-panel" role="tabpanel" aria-labelledby="tab-white" hidden><div class="temperature-preview"><span id="temp-icon">☀</span><strong id="temp-value">2700 K</strong><p id="temp-name">Warm & welcoming</p></div><label class="range-label" for="temperature">White temperature <span>2200–6500 K</span></label><input id="temperature" class="temperature-range" type="range" min="2200" max="6500" step="100" value="2700"><div class="range-ends"><span>Candle glow</span><span>Cool daylight</span></div><div class="white-presets"><button data-temp="2700">Warm</button><button data-temp="4000">Neutral</button><button data-temp="6500">Daylight</button></div></div>
+        <div id="panel-scenes" class="mode-panel" role="tabpanel" aria-labelledby="tab-scenes" hidden><input id="scene-search" class="search-input" placeholder="Find a scene…" aria-label="Search scenes"><div class="scene-grid" id="scene-grid"></div><label class="range-label" for="speed">Effect speed <span id="speed-value">100</span></label><input type="range" id="speed" min="10" max="200" value="100"><p class="hint">Scenes and speed support vary by bulb. Changes are confirmed by the light.</p></div>
+        <div class="brightness-block"><label class="range-label" for="brightness"><span>☼ &nbsp;Brightness</span><strong id="brightness-value">100%</strong></label><input id="brightness" type="range" min="10" max="100" value="100"><div class="range-ends"><span>Soft glow</span><span>Full radiance</span></div></div>
+      </article>
+    </div>
+    <div class="section-heading"><div><h2>A mood for every moment</h2><p>Settle in. Switch on. Make it yours.</p></div><span class="tiny-label">ONE TAP AWAY</span></div>
+    <div class="mood-grid" id="mood-grid"></div>
+    <div class="section-heading"><div><h2>Your saved moods <span class="count" id="favorites-count">0</span></h2><p>Your favorite settings, ready when you are.</p></div><button class="button secondary" id="save-favorite">＋ Save current mood</button></div>
+    <div id="favorites" class="favorites-grid"></div>
+    <div class="bottom-grid"><article class="card quick-routine"><div class="routine-icon">☾</div><div><h3>Let the day fade away</h3><p>Gently dim your light, then turn it off.</p></div><button class="button secondary" id="sleep-shortcut">Set a sleep fade ↗</button></article><article class="card tip-card"><span class="tiny-label">A LITTLE SHORTCUT</span><p><kbd>Space</kbd> to switch your light.<br><kbd>↑</kbd> <kbd>↓</kbd> to find the right brightness.</p></article></div>
+  </section>
+  <section id="section-sync" class="page-section" hidden>
+    <div class="page-heading"><div><div class="eyebrow">BE PART OF THE PICTURE</div><h1>Beyond the screen<span>.</span></h1><p>Let the movie’s colors or the music’s energy fill your room.</p></div><span class="pill" id="sync-state">READY WHEN YOU ARE</span></div>
+    <div class="sync-layout">
+      <article class="card sync-hero" id="sync-hero">
+        <div class="stage-head"><span class="pill">LIVE SYNC</span><span class="small-muted" id="sync-device-name">Philips A60</span></div>
+        <div class="sync-art"><div class="sync-art-glow"></div><div class="sync-monitor"><div class="sync-screen"><div class="sync-landscape"></div><span id="sync-screen-label">YOUR WORLD, IN COLOR</span></div><div class="sync-monitor-stand"></div></div><div class="sync-color-orb" id="sync-color-orb"></div></div>
+        <div class="sync-metrics"><div><span>OUTPUT</span><strong id="sync-rate">—<small> / sec</small></strong></div><div><span>SAMPLE AGE AT SEND</span><strong id="sync-latency">—<small> ms</small></strong></div><div><span>BULB REPLIES</span><strong id="sync-acks">—</strong></div></div>
+        <div class="sync-live-color"><span id="sync-color-swatch"></span><div><strong id="sync-color-text">Waiting for your first frame</strong><p id="sync-detail">All sampling stays on your Mac.</p></div></div>
+      </article>
+      <article class="card form-card sync-settings">
+        <div class="card-heading"><h2>Choose your connection</h2><span class="tiny-label">ONE SOURCE. LESS WORK.</span></div>
+        <div class="sync-source"><label><input type="radio" name="sync-mode" value="screen" checked><span><strong>▣ &nbsp; Screen colors</strong><small>Match the movie or whatever’s on your display.</small></span></label><label><input type="radio" name="sync-mode" value="music"><span><strong>♫ &nbsp; System audio</strong><small>React to music. No microphone or screen-color analysis.</small></span></label></div>
+        <label id="sync-display-label">Display <select id="sync-display"><option>Checking displays…</option></select></label>
+        <div id="sync-screen-options" class="sync-options-grid"><label>Sample area<select id="sync-region"><option value="whole">Whole display</option><option value="center">Center · less UI & subtitles</option><option value="edges">Edges · ambient effect</option><option value="left">Left half</option><option value="right">Right half</option></select></label><label>Color selection<select id="sync-method"><option value="vibrant">Dominant vibrant color</option><option value="average">Average color</option></select></label></div>
+        <div id="sync-audio-options" class="sync-options-grid" hidden><label>Music palette<select id="sync-palette"><option value="spectrum">Spectrum · frequency colors</option><option value="violet">Violet nights</option><option value="ocean">Ocean blues</option><option value="ember">Warm embers</option></select></label><label>Sensitivity<select id="sync-sensitivity"><option value="3">Subtle</option><option value="5" selected>Balanced</option><option value="8">High</option><option value="10">Quiet audio</option></select></label></div>
+        <div class="sync-options-grid"><label>Update rate<select id="sync-fps"><option value="15" selected>Fast · up to 15 / sec</option><option value="10">Balanced · up to 10 / sec</option><option value="5">Gentle · up to 5 / sec</option></select></label><label>Responsiveness<select id="sync-smoothing"><option value="0">Instant · no smoothing</option><option value="35">Light smoothing</option><option value="65">Smooth & cinematic</option><option value="85">Slow & gentle</option></select></label></div>
+        <div class="sync-slider"><label class="range-label" for="sync-brightness">Maximum brightness <span id="sync-brightness-value">100%</span></label><input id="sync-brightness" type="range" min="10" max="100" value="100"></div>
+        <div class="sync-slider" id="sync-boost-wrap"><label class="range-label" for="sync-boost">Color saturation boost <span id="sync-boost-value">125%</span></label><input id="sync-boost" type="range" min="50" max="200" value="125"></div>
+        <label class="sync-checkbox" id="sync-follow-wrap"><input id="sync-follow" type="checkbox"> Follow scene brightness <span>Dark scenes dim the light.</span></label>
+        <div class="sync-permission" id="sync-permission" hidden><strong>One macOS permission, then you’re ready.</strong><p>Allow Luma (or ChatGPT when using the browser version) under System Settings → Privacy & Security → Screen & System Audio Recording. Apple uses this permission for both sources.</p><button class="button secondary" id="sync-allow">Request permission</button><button class="button secondary" id="sync-recheck">Check again</button></div>
+        <div class="sync-actions"><button class="button primary" id="sync-start">▶ Start live sync</button><button class="button secondary" id="sync-stop" disabled>■ Stop & restore</button></div>
+        <p class="sync-feedback" id="sync-feedback" role="status" aria-live="polite">Choose a source and press Start. Your original light settings return when you stop.</p>
+      </article>
+    </div>
+    <div class="sync-notes"><div><span>↗</span><p><strong>Built for a quick response</strong>Latest samples go straight over Wi-Fi. No old frames queue up. Actual delay depends on the Mac, network, and bulb.</p></div><div><span>◈</span><p><strong>Play on either display</strong>Keep Luma on your laptop and select the external monitor for your movie. Some protected video may appear black to capture.</p></div><div><span>⌁</span><p><strong>Keep the feeling, keep your privacy</strong>Only colors and audio energy are analyzed. Nothing is recorded, saved, or uploaded. Sync keeps running if this page is hidden.</p></div></div>
+  </section>
+  <section id="section-routines" class="page-section" hidden>
+    <div class="page-heading"><div><div class="eyebrow">A RHYTHM OF YOUR OWN</div><h1>Light that follows your day<span>.</span></h1><p>Timers and routines run while this app and Mac stay awake.</p></div></div>
+    <div class="routine-grid"><article class="card form-card"><span class="routine-icon">◷</span><h2>A little later</h2><p>Turn the light on or off after a countdown.</p><form id="timer-form"><label>In how many minutes?<input type="number" name="minutes" min="1" max="1440" value="30" required></label><label>Then<select name="action"><option value="off">Turn off</option><option value="on">Turn on</option></select></label><button class="button primary" type="submit">Start timer ↗</button></form></article>
+    <article class="card form-card"><span class="routine-icon">☾</span><h2>Goodnight, gently</h2><p>Fade from the current brightness to off. Manual changes cancel the fade.</p><form id="fade-form"><label>Fade over (minutes)<input name="minutes" type="number" min="1" max="1440" value="20" required></label><button class="button primary" type="submit">Start sleep fade ↗</button></form></article>
+    <article class="card form-card"><span class="routine-icon">☀</span><h2>Same time tomorrow</h2><p>A daily light ritual, in this Mac’s local time.</p><form id="daily-form"><label>Time<input type="time" name="time" value="19:00" required></label><label>Action<select name="action"><option value="on">Turn on</option><option value="off">Turn off</option><option value="warm">Warm evening · 2700 K, 50%</option><option value="focus">Focus · 5000 K, 100%</option><option value="current">Use current mood</option></select></label><button class="button primary" type="submit">Create daily routine ↗</button></form></article></div>
+    <div class="section-heading"><div><h2>Coming up</h2><p id="timezone-note">Scheduled on this Mac.</p></div></div><div id="jobs"></div>
+  </section>
+  <section id="section-devices" class="page-section" hidden>
+    <div class="page-heading"><div><div class="eyebrow">A HOME THAT GLOWS</div><h1>Meet your lights<span>.</span></h1><p>Everything stays between this Mac and your Wi-Fi lights.</p></div><button class="button primary" id="discover">⌕ Discover lights</button></div>
+    <div id="discovery-results" hidden class="card form-card"></div><div id="device-cards" class="device-grid"></div>
+    <article class="card form-card add-card"><h2>Add a light by IP</h2><p>Find its address in the WiZ app’s device information.</p><form id="add-form" class="inline-form"><label>IP address<input name="ip" placeholder="192.168.1.8" required></label><label>Name<input name="name" placeholder="Bedside light" maxlength="50"></label><label>Room<input name="room" placeholder="Bedroom" maxlength="40"></label><button type="submit" class="button primary">Connect light ↗</button></form></article>
+    <div class="section-heading"><div><h2>Activity</h2><p>Commands, routines, and connection details.</p></div><button class="button secondary" id="export">↓ Export diagnostics</button></div><div class="card activity-list" id="activity"></div>
+  </section>
+  <footer><span><span class="status-dot"></span> Direct Wi-Fi control</span><span>Stay in your element. <strong>luma.</strong></span></footer>
+</main>
+<div id="toast" role="status" aria-live="polite" hidden></div>
+<dialog id="name-dialog"><form method="dialog"><div class="eyebrow">MAKE IT YOURS</div><h2 id="dialog-title">Save this mood</h2><label>Name<input id="dialog-input" maxlength="40" required autocomplete="off"></label><div class="dialog-actions"><button class="button secondary" value="cancel" formnovalidate>Cancel</button><button class="button primary" value="save">Save mood</button></div></form></dialog>
+</body></html>

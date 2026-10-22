@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.luma.json
+.luma.tmp
+Luma Capture.app/Contents/MacOS/LumaCapture
+Luma Capture.app/Contents/_CodeSignature/
+Luma.app/
+
+.DS_Store
+*.log
+luma-preview.png
+luma-mac-preview.png
